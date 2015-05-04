@@ -7,10 +7,10 @@ A MonoBehaviour that handles payment processing for tokens.
 ### initialization
 `TokenManager.instance`
 
-### static fields
+### fields
 `tokensPerCredit` - -n = 1/n tokens per credit = n credits per token, 0 = freeplay
 
-### static properties
+### properties
 `tokensInserted` - total number of coins inserted so far
 
 `credits` - number of credits available for play
