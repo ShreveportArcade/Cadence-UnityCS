@@ -48,6 +48,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static void LoadSession () {
+		Debug.Log("LOADING SESSION C#");
 		instance.tokensPerCredit = PlayerPrefs.GetInt("Cadence.tokensPerCredit", 1);
 		instance._tokensInserted = PlayerPrefs.GetInt("Cadence.tokensInserted", 0);
 		instance._credits = PlayerPrefs.GetInt("Cadence.credits", 0);

@@ -10,11 +10,11 @@ GameObject:
   - 4: {fileID: 485908}
   - 114: {fileID: 11425502}
   m_Layer: 0
-  m_Name: Cadence.TokenManager
+  m_Name: Cadence.TokenManager.JS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &485908
 Transform:
@@ -36,7 +36,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 118712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4142afddf619448a6ae2af6cf6159e30, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d88b7307b94d46af92c041dbebe7081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tokensPerCredit: 1
