@@ -39,6 +39,7 @@ public class TokenManager : MonoBehaviour {
 	void Awake () {
 		if (_instance == null) {
 			_instance = this;
+			DontDestroyOnLoad(_instance.gameObject);
 			LoadSession();
 		}
 		else if (_instance != this) {
