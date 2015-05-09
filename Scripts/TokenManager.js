@@ -82,14 +82,14 @@ static function TokensPerCreditText () : String {
 	else if (tokensPerCredit > 1) {
 		var tokensSoFar = instance().tokensInserted % instance().tokensPerCredit;
 		if (tokensSoFar == 0) {
-			return String.Format("{1} COINS PER CREDIT", tokensPerCredit);
+			return String.Format("{0} COINS PER CREDIT", tokensPerCredit);
 		}
 		else {
 			return String.Format("{0}/{1} COINS", tokensSoFar, tokensPerCredit);
 		}
 	}
 	else if (tokensPerCredit < -1) {
-		return String.Format("{1} CREDITS PER COIN", Mathf.Abs(tokensPerCredit));
+		return String.Format("{0} CREDITS PER COIN", Mathf.Abs(tokensPerCredit));
 	}	
 }
 
