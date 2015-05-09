@@ -72,7 +72,7 @@ public class TokenManager : MonoBehaviour {
 			AddCredit(-tokensPerCredit);
 		}
 		else {
-			Debug.LogError("Coin inserted during freeplay.");
+			Debug.LogError("Token inserted during freeplay.");
 		}		
 	}
 
@@ -93,7 +93,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetButtonUp("Coin")) InsertToken();
+		if (Input.GetButtonUp("Token")) InsertToken();
 	}
 
 	void OnApplicationQuit() {
