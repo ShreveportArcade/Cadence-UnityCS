@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using Paraphernalia.Utils;
 
 namespace Cadence {
 public class TokenManager : MonoBehaviour {
@@ -44,7 +43,7 @@ public class TokenManager : MonoBehaviour {
 		}
 		else if (_instance != this) {
 			Debug.LogWarning("TokenManager already initialized, destroying duplicate");
-			GameObjectUtils.Destroy(this);
+			GameObject.Destroy(this);
 		}
 	}
 
