@@ -25,6 +25,7 @@ public class TokenManager : MonoBehaviour {
 
 	[Tooltip("-n = 1/n tokens per credit = n credits per token, 0 = freeplay")]
 	public int tokensPerCredit = 1;
+	public KeyCode tokenKeyCode = KeyCode.Joystick1Button19;
 
 	private int _tokensInserted = 0;
 	public int tokensInserted {
@@ -93,8 +94,44 @@ public class TokenManager : MonoBehaviour {
 		}
 	}
 
+	public static string TokensPerCreditText (bool checkTokensInserted) {
+		var tokensPerCredit = instance.tokensPerCredit;
+		if (tokensPerCredit == 0) {
+			return "FREE PLAY";
+		}
+		else if (Mathf.Abs(tokensPerCredit) == 1) {
+			return "1 CREDIT PER COIN";
+		}	
+		else if (tokensPerCredit > 1) {
+			var tokensSoFar = instance.tokensInserted % instance.tokensPerCredit;
+			if (tokensSoFar == 0 || !checkTokensInserted) {
+				return string.Format("{0} COINS PER CREDIT", tokensPerCredit);
+			}
+			else {
+				return string.Format("{0}/{1} COINS", tokensSoFar, tokensPerCredit);
+			}
+		}
+		else {
+			return string.Format("{0} CREDITS PER COIN", Mathf.Abs(tokensPerCredit));
+		}	
+	}
+
+	public static string CreditsText () {
+		if (instance.tokensPerCredit == 0) {
+			return "";
+		}
+
+		if (instance.credits == 0) {
+			return "INSERT COIN";
+		}
+		else if (instance.credits == 1) {
+			return "1 CREDIT";
+		}
+		return string.Format("{0} CREDITS", instance.credits);
+	}
+
 	void Update () {
-		if (Input.GetButtonUp("Token")) InsertToken();
+		if (Input.GetKeyUp(tokenKeyCode)) InsertToken();
 	}
 
 	void OnApplicationQuit() {
