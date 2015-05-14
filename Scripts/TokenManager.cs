@@ -26,7 +26,10 @@ public class TokenManager : MonoBehaviour {
 	[Tooltip("-n = 1/n tokens per credit = n credits per token, 0 = freeplay")]
 	public int tokensPerCredit = 1;
 	public KeyCode tokenKeyCode = KeyCode.Joystick1Button19;
-
+	#if UNITY_EDITOR
+	public KeyCode altTokenKeyCode = KeyCode.T;
+	#endif
+	
 	private int _tokensInserted = 0;
 	public int tokensInserted {
 		get { return _tokensInserted; }
@@ -36,6 +39,15 @@ public class TokenManager : MonoBehaviour {
 	public int credits {
 		get { return _credits; }
 	}
+
+	public string freePlayString = "FREE PLAY";
+	public string onePlayPerTokenString = "1 CREDIT PER COIN";
+	public string coinsPerCreditFormatString = "{0} COINS PER CREDIT";
+	public string tokensSoFarFormatString = "{0}/{1} COINS";
+	public string creditsPerCoinFormatString = "{0} CREDITS PER COIN";
+	public string insertCoinsString = "INSERT COIN";
+	public string oneCreditString = "1 CREDIT";
+	public string nCreditsFormatString = "{0} CREDITS";
 	
 	void Awake () {
 		if (_instance == null) {
@@ -50,7 +62,6 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static void LoadSession () {
-		Debug.Log("LOADING SESSION C#");
 		instance.tokensPerCredit = PlayerPrefs.GetInt("Cadence.tokensPerCredit", 1);
 		instance._tokensInserted = PlayerPrefs.GetInt("Cadence.tokensInserted", 0);
 		instance._credits = PlayerPrefs.GetInt("Cadence.credits", 0);
@@ -97,22 +108,22 @@ public class TokenManager : MonoBehaviour {
 	public static string TokensPerCreditText (bool checkTokensInserted) {
 		var tokensPerCredit = instance.tokensPerCredit;
 		if (tokensPerCredit == 0) {
-			return "FREE PLAY";
+			return instance.freePlayString;
 		}
 		else if (Mathf.Abs(tokensPerCredit) == 1) {
-			return "1 CREDIT PER COIN";
+			return instance.onePlayPerTokenString;
 		}	
 		else if (tokensPerCredit > 1) {
 			var tokensSoFar = instance.tokensInserted % instance.tokensPerCredit;
 			if (tokensSoFar == 0 || !checkTokensInserted) {
-				return string.Format("{0} COINS PER CREDIT", tokensPerCredit);
+				return string.Format(instance.coinsPerCreditFormatString, tokensPerCredit);
 			}
 			else {
-				return string.Format("{0}/{1} COINS", tokensSoFar, tokensPerCredit);
+				return string.Format(instance.tokensSoFarFormatString, tokensSoFar, tokensPerCredit);
 			}
 		}
 		else {
-			return string.Format("{0} CREDITS PER COIN", Mathf.Abs(tokensPerCredit));
+			return string.Format(instance.creditsPerCoinFormatString, Mathf.Abs(tokensPerCredit));
 		}	
 	}
 
@@ -122,16 +133,20 @@ public class TokenManager : MonoBehaviour {
 		}
 
 		if (instance.credits == 0) {
-			return "INSERT COIN";
+			return instance.insertCoinsString;
 		}
 		else if (instance.credits == 1) {
-			return "1 CREDIT";
+			return instance.oneCreditString;
 		}
-		return string.Format("{0} CREDITS", instance.credits);
+		return string.Format(instance.nCreditsFormatString, instance.credits);
 	}
 
 	void Update () {
 		if (Input.GetKeyUp(tokenKeyCode)) InsertToken();
+
+		#if UNITY_EDITOR
+		if (Input.GetKeyUp(altTokenKeyCode)) InsertToken();
+		#endif
 	}
 
 	void OnApplicationQuit() {
