@@ -87,7 +87,7 @@ public class TokenManager : MonoBehaviour {
 		}
 	}
 
-	public void InsertToken(int acceptor = 0) {
+	void InsertToken(int acceptor = 0) {
 		_tokensInserted[acceptor]++;
 		if (tokensPerCredit > 0) {
 			int tokensSoFar = tokensInserted[acceptor] % tokensPerCredit;
