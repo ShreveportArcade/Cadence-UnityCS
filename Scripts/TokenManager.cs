@@ -94,7 +94,7 @@ public class TokenManager : MonoBehaviour {
 		if (tokensPerCredit > 0) {
 			int tokensSoFar = tokensInserted[acceptor] % tokensPerCredit;
 			int tokensNeeded = tokensPerCredit - tokensSoFar;
-			onTokenInserted(tokensSoFar, tokensNeeded, acceptor);
+			onTokenInserted(acceptor, tokensSoFar, tokensNeeded);
 			if (tokensSoFar == 0) AddCredit(1, acceptor);
 		}
 		else if (tokensPerCredit < 0) {
@@ -107,13 +107,13 @@ public class TokenManager : MonoBehaviour {
 
 	public static void AddCredit(int credits, int acceptor = 0) {
 		instance._credits[acceptor] += credits;
-		onCreditAdded(instance.credits[acceptor], acceptor);
+		onCreditAdded(acceptor, instance.credits[acceptor]);
 	}
 
 	public static bool UseCredit(int acceptor = 0) {
 		if (instance.credits[acceptor] > 0) {
 			instance._credits[acceptor]--;
-			onCreditUsed(instance.credits[acceptor], acceptor);
+			onCreditUsed(acceptor, instance.credits[acceptor]);
 			return true;
 		}
 		else {
