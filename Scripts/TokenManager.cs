@@ -158,7 +158,7 @@ public class TokenManager : MonoBehaviour {
 		else if (instance.credits[acceptor] == 1) {
 			return instance.oneCreditString;
 		}
-		return string.Format(instance.nCreditsFormatString, instance.credits);
+		return string.Format(instance.nCreditsFormatString, instance.credits[acceptor]);
 	}
 
 	void Update () {
