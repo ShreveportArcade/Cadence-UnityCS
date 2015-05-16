@@ -39,6 +39,9 @@ A MonoBehaviour that handles payment processing for tokens.
 
 `onCreditUsed (int acceptor, int totalCredits)`
 
+`onInsufficientCredit(int acceptor, int tokensNeeded)`
+
+
 ### static methods
 `public static int JoystickCount ()`
 

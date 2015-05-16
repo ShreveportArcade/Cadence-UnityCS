@@ -11,7 +11,7 @@ public class TokenManager : MonoBehaviour {
 	public static event OnCreditChanged onCreditAdded = delegate{};
 	public static event OnCreditChanged onCreditUsed = delegate{};
 
-	public delegate void OnInsufficientCredit(int tokensNeeded);
+	public delegate void OnInsufficientCredit(int acceptor, int tokensNeeded);
 	public static event OnInsufficientCredit onInsufficientCredit = delegate{};
 
 	private static TokenManager _instance;
@@ -20,7 +20,6 @@ public class TokenManager : MonoBehaviour {
 			if (_instance == null) {
 				GameObject tokenMan = new GameObject("Cadence.TokenManager");
 				tokenMan.AddComponent<TokenManager>();
-				Debug.Log(_instance);
 			}
 			return _instance;
 		}
@@ -120,7 +119,7 @@ public class TokenManager : MonoBehaviour {
 		else {
 			int tokensSoFar = instance.tokensInserted[acceptor] % instance.tokensPerCredit;
 			int tokensNeeded = instance.tokensPerCredit - tokensSoFar;
-			onInsufficientCredit(tokensNeeded);
+			onInsufficientCredit(acceptor, tokensNeeded);
 			return false;
 		}
 	}
