@@ -40,6 +40,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tokensPerCredit: 1
+  tokenButton: 19
+  editorTokenKeyCode: 116
+  freePlayString: FREE PLAY
+  onePlayPerTokenString: 1 CREDIT PER COIN
+  coinsPerCreditFormatString: '{0} COINS PER CREDIT'
+  tokensSoFarFormatString: '{0}/{1} COINS'
+  creditsPerCoinFormatString: '{0} CREDITS PER COIN'
+  insertCoinsString: <INSERT COIN>
+  oneCreditString: <1 CREDIT>
+  nCreditsFormatString: <{0} CREDITS>
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

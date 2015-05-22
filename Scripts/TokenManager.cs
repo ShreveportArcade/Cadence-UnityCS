@@ -18,8 +18,11 @@ public class TokenManager : MonoBehaviour {
 	public static TokenManager instance {
 		get {
 			if (_instance == null) {
+				SetupAsInstance(FindObjectOfType(typeof(TokenManager)) as TokenManager);
+			}
+			if (_instance == null) {
 				GameObject tokenMan = new GameObject("Cadence.TokenManager");
-				tokenMan.AddComponent<TokenManager>();
+				SetupAsInstance(tokenMan.AddComponent<TokenManager>());
 			}
 			return _instance;
 		}
@@ -29,7 +32,12 @@ public class TokenManager : MonoBehaviour {
 	public int tokensPerCredit = 1;
 	[Range(0,19)] public int tokenButton = 19;
 	#if UNITY_EDITOR
-	public KeyCode editorTokenKeyCode = KeyCode.T;
+	public KeyCode[] editorTokenKeyCodes = new KeyCode[] {
+		KeyCode.Alpha1,
+		KeyCode.Alpha2,
+		KeyCode.Alpha3,
+		KeyCode.Alpha4
+	};	
 	#endif
 	
 	private int[] _tokensInserted;
@@ -53,11 +61,7 @@ public class TokenManager : MonoBehaviour {
 	
 	void Awake () {
 		if (_instance == null) {
-			_instance = this;
-			_instance._tokensInserted = new int[CoinAcceptorCount()];
-			_instance._credits = new int[CoinAcceptorCount()];
-			DontDestroyOnLoad(_instance.gameObject);
-			LoadSession();
+			SetupAsInstance(this);
 		}
 		else if (_instance != this) {
 			Debug.LogWarning("TokenManager already initialized, destroying duplicate");
@@ -65,12 +69,21 @@ public class TokenManager : MonoBehaviour {
 		}
 	}
 
-	public static int JoystickCount () {
-		return Input.GetJoystickNames().Length;
+	static void SetupAsInstance (TokenManager tokenMan) {
+		if (tokenMan == null) return;
+		_instance = tokenMan;
+		_instance._tokensInserted = new int[CoinAcceptorCount()];
+		_instance._credits = new int[CoinAcceptorCount()];
+		DontDestroyOnLoad(_instance.gameObject);
+		LoadSession();
 	}
 
 	public static int CoinAcceptorCount () {
-		return Mathf.Max(1, JoystickCount());
+		#if UNITY_EDITOR
+		return instance.editorTokenKeyCodes.Length;
+		#else
+		return Input.GetJoystickNames().Length;
+		#endif
 	}
 
 	public static void LoadSession () {
@@ -87,6 +100,17 @@ public class TokenManager : MonoBehaviour {
 			PlayerPrefs.SetInt("Cadence.tokensInserted." + i, instance.tokensInserted[i]);
 			PlayerPrefs.SetInt("Cadence.credits." + i, instance.credits[i]);
 		}
+	}
+
+	[ContextMenu("Clear Session")]
+	public void ClearSession () {
+		for (int i = 0; i < CoinAcceptorCount(); i++) {
+			instance.credits[i] = 0;
+			instance.tokensInserted[i] = 0;
+			onTokenInserted(i, 0, 0);
+			onCreditAdded(i, 0);
+		}
+		SaveSession();
 	}
 
 	void InsertToken(int acceptor = 0) {
@@ -125,7 +149,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static string TokensPerCreditText (bool checkTokensInserted, int acceptor = 0) {
-		var tokensPerCredit = instance.tokensPerCredit;
+		int tokensPerCredit = instance.tokensPerCredit;
 		if (tokensPerCredit == 0) {
 			return instance.freePlayString;
 		}
@@ -133,7 +157,7 @@ public class TokenManager : MonoBehaviour {
 			return instance.onePlayPerTokenString;
 		}	
 		else if (tokensPerCredit > 1) {
-			var tokensSoFar = instance.tokensInserted[acceptor] % instance.tokensPerCredit;
+			int tokensSoFar = instance.tokensInserted[acceptor] % instance.tokensPerCredit;
 			if (tokensSoFar == 0 || !checkTokensInserted) {
 				return string.Format(instance.coinsPerCreditFormatString, tokensPerCredit);
 			}
@@ -161,14 +185,14 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	void Update () {
-		for (int i = 0; i < JoystickCount(); i++) {
+		for (int i = 0; i < CoinAcceptorCount(); i++) {
+			#if UNITY_EDITOR
+			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
+			#else
 			string key = string.Format("joystick {0} button {1}", i, tokenButton);
 			if (Input.GetKeyUp(key)) InsertToken(i);
+			#endif
 		}
-
-		#if UNITY_EDITOR
-		if (Input.GetKeyUp(editorTokenKeyCode)) InsertToken();
-		#endif
 	}
 
 	void OnApplicationQuit() {
