@@ -189,7 +189,7 @@ public class TokenManager : MonoBehaviour {
 			#if UNITY_EDITOR
 			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
 			#else
-			string key = string.Format("joystick {0} button {1}", i, tokenButton);
+			string key = string.Format("joystick {0} button {1}", i+1, tokenButton);
 			if (Input.GetKeyUp(key)) InsertToken(i);
 			#endif
 		}
