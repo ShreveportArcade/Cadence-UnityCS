@@ -30,7 +30,12 @@ public class TokenManager : MonoBehaviour {
 
 	[Tooltip("-n = 1/n tokens per credit = n credits per token, 0 = freeplay")]
 	public int tokensPerCredit = 1;
-	[Range(0,19)] public int tokenButton = 19;
+	public KeyCode[] tokenKeyCodes = new KeyCode[] {
+		KeyCode.Joystick1Button19,
+		KeyCode.Joystick2Button19,
+		KeyCode.Joystick3Button19,
+		KeyCode.Joystick4Button19
+	};
 	#if UNITY_EDITOR
 	public KeyCode[] editorTokenKeyCodes = new KeyCode[] {
 		KeyCode.Alpha1,
@@ -189,8 +194,7 @@ public class TokenManager : MonoBehaviour {
 			#if UNITY_EDITOR
 			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
 			#else
-			string key = string.Format("joystick {0} button {1}", i+1, tokenButton);
-			if (Input.GetKeyUp(key)) InsertToken(i);
+			if (Input.GetKeyUp(tokenKeyCodes[i])) InsertToken(i);
 			#endif
 		}
 	}
