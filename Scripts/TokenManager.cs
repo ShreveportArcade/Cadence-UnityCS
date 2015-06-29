@@ -36,7 +36,7 @@ public class TokenManager : MonoBehaviour {
 		KeyCode.Joystick3Button19,
 		KeyCode.Joystick4Button19
 	};
-	#if UNITY_EDITOR
+	#if UNITY_EDITOR || !UNITY_STANDALONE
 	public KeyCode[] editorTokenKeyCodes = new KeyCode[] {
 		KeyCode.Alpha1,
 		KeyCode.Alpha2,
@@ -84,7 +84,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static int CoinAcceptorCount () {
-		#if UNITY_EDITOR
+		#if UNITY_EDITOR || !UNITY_STANDALONE
 		return instance.editorTokenKeyCodes.Length;
 		#else
 		return Input.GetJoystickNames().Length;
@@ -191,7 +191,7 @@ public class TokenManager : MonoBehaviour {
 
 	void Update () {
 		for (int i = 0; i < CoinAcceptorCount(); i++) {
-			#if UNITY_EDITOR
+			#if UNITY_EDITOR || !UNITY_STANDALONE
 			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
 			#else
 			if (Input.GetKeyUp(tokenKeyCodes[i])) InsertToken(i);
