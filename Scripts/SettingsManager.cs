@@ -4,7 +4,7 @@ using System.Collections;
 namespace Cadence {
 public class SettingsManager : MonoBehaviour {
 
-	static SettingsManager _instance;
+	private static SettingsManager _instance;
 	public static SettingsManager instance {
 		get {
 		    if (_instance == null) {
