@@ -140,7 +140,10 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static bool UseCredit(int acceptor = 0) {
-		if (instance.credits[acceptor] > 0) {
+		if (instance.tokensPerCredit == 0) {
+			return true;
+		}
+		else if (instance.credits[acceptor] > 0) {
 			instance._credits[acceptor]--;
 			onCreditUsed(acceptor, instance.credits[acceptor]);
 			return true;
