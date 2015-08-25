@@ -139,6 +139,10 @@ public class TokenManager : MonoBehaviour {
 		onCreditAdded(acceptor, instance.credits[acceptor]);
 	}
 
+	public static bool CanPlay(int acceptor = 0) {
+		return (instance.tokensPerCredit == 0 || instance.credits[acceptor] > 0);
+	}
+
 	public static bool UseCredit(int acceptor = 0) {
 		if (instance.tokensPerCredit == 0) {
 			return true;
