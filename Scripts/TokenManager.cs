@@ -28,6 +28,8 @@ public class TokenManager : MonoBehaviour {
 		}
 	}
 
+	public bool hasCoinDoor = true;
+
 	[Tooltip("-n = 1/n tokens per credit = n credits per token, 0 = freeplay")]
 	public int tokensPerCredit = 1;
 	public KeyCode[] tokenKeyCodes = new KeyCode[] {
@@ -140,11 +142,11 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static bool CanPlay(int acceptor = 0) {
-		return (instance.tokensPerCredit == 0 || instance.credits[acceptor] > 0);
+		return (!instance.hasCoinDoor || instance.tokensPerCredit == 0 || instance.credits[acceptor] > 0);
 	}
 
 	public static bool UseCredit(int acceptor = 0) {
-		if (instance.tokensPerCredit == 0) {
+		if (!instance.hasCoinDoor || instance.tokensPerCredit == 0) {
 			return true;
 		}
 		else if (instance.credits[acceptor] > 0) {
@@ -162,7 +164,10 @@ public class TokenManager : MonoBehaviour {
 
 	public static string TokensPerCreditText (bool checkTokensInserted, int acceptor = 0) {
 		int tokensPerCredit = instance.tokensPerCredit;
-		if (tokensPerCredit == 0) {
+		if (!instance.hasCoinDoor) {
+			return "";
+		}
+		else if (tokensPerCredit == 0) {
 			return instance.freePlayString;
 		}
 		else if (Mathf.Abs(tokensPerCredit) == 1) {
@@ -183,7 +188,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static string CreditsText (int acceptor = 0) {
-		if (instance.tokensPerCredit == 0) {
+		if (!instance.hasCoinDoor || instance.tokensPerCredit == 0) {
 			return "";
 		}
 
@@ -197,6 +202,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	void Update () {
+		if (!hasCoinDoor) return;
 		for (int i = 0; i < CoinAcceptorCount(); i++) {
 			#if UNITY_EDITOR || !UNITY_LINUX
 			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
