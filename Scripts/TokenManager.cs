@@ -32,6 +32,10 @@ public class TokenManager : MonoBehaviour {
 
 	[Tooltip("-n = 1/n tokens per credit = n credits per token, 0 = freeplay")]
 	public int tokensPerCredit = 1;
+	public static bool isFreePlay {
+		get { return instance.tokensPerCredit == 0; }
+	}
+
 	public KeyCode[] tokenKeyCodes = new KeyCode[] {
 		KeyCode.Joystick1Button19,
 		KeyCode.Joystick2Button19,
@@ -142,11 +146,11 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static bool CanPlay(int acceptor = 0) {
-		return (!instance.hasCoinDoor || instance.tokensPerCredit == 0 || instance.credits[acceptor] > 0);
+		return (!instance.hasCoinDoor || isFreePlay || instance.credits[acceptor] > 0);
 	}
 
 	public static bool UseCredit(int acceptor = 0) {
-		if (!instance.hasCoinDoor || instance.tokensPerCredit == 0) {
+		if (!instance.hasCoinDoor || isFreePlay) {
 			return true;
 		}
 		else if (instance.credits[acceptor] > 0) {
@@ -188,7 +192,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static string CreditsText (int acceptor = 0) {
-		if (!instance.hasCoinDoor || instance.tokensPerCredit == 0) {
+		if (!instance.hasCoinDoor || isFreePlay) {
 			return "";
 		}
 
