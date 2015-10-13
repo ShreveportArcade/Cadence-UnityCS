@@ -90,11 +90,7 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static int CoinAcceptorCount () {
-		#if UNITY_EDITOR || !UNITY_LINUX
-		return instance.editorTokenKeyCodes.Length;
-		#else
-		return Input.GetJoystickNames().Length;
-		#endif
+		return instance.tokenKeyCodes.Length;
 	}
 
 	public static void LoadSession () {
@@ -143,6 +139,15 @@ public class TokenManager : MonoBehaviour {
 	public static void AddCredit(int credits, int acceptor = 0) {
 		instance._credits[acceptor] += credits;
 		onCreditAdded(acceptor, instance.credits[acceptor]);
+	}
+
+	public static bool AnyCanPlay() {
+		for (int i = 0; i < CoinAcceptorCount(); i++) {
+			if (!CanPlay(i)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static bool CanPlay(int acceptor = 0) {
