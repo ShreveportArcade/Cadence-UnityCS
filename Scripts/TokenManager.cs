@@ -143,11 +143,11 @@ public class TokenManager : MonoBehaviour {
 
 	public static bool AnyCanPlay() {
 		for (int i = 0; i < CoinAcceptorCount(); i++) {
-			if (!CanPlay(i)) {
-				return false;
+			if (CanPlay(i)) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	public static bool CanPlay(int acceptor = 0) {
