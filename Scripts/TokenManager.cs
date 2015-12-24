@@ -85,7 +85,7 @@ public class TokenManager : MonoBehaviour {
 		_instance = tokenMan;
 		_instance._tokensInserted = new int[CoinAcceptorCount()];
 		_instance._credits = new int[CoinAcceptorCount()];
-		DontDestroyOnLoad(_instance.gameObject);
+		if (_instance.transform.parent == null) DontDestroyOnLoad(_instance.gameObject);
 		LoadSession();
 	}
 

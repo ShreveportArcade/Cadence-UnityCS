@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace Cadence {
 public class SettingsManager : MonoBehaviour {
@@ -21,7 +22,7 @@ public class SettingsManager : MonoBehaviour {
 	void Awake () {
 		if (_instance == null) {
 			_instance = this;
-			DontDestroyOnLoad(_instance.gameObject);
+			if (_instance.transform.parent == null) DontDestroyOnLoad(_instance.gameObject);
 		}
 		else if (_instance != this) {
 			Debug.LogWarning("SettingsManager already initialized, destroying duplicate");
@@ -38,15 +39,15 @@ public class SettingsManager : MonoBehaviour {
 	}
 
 	public static void EnterSettings () {
-		instance.sceneToLoad = Application.loadedLevelName;
+		instance.sceneToLoad = SceneManager.GetActiveScene().name;
 		instance.cursorVisibleInGame = Cursor.visible;
 		Cursor.visible = true;
-		Application.LoadLevel("CadenceSettings");
+		SceneManager.LoadScene("CadenceSettings");
 	}
 
 	public static void ExitSettings () {
 		Cursor.visible = instance.cursorVisibleInGame;
-		Application.LoadLevel(instance.sceneToLoad);
+		SceneManager.LoadScene(instance.sceneToLoad);
 	}
 }
 }
