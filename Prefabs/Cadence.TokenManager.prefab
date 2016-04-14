@@ -41,7 +41,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasCoinDoor: 1
   tokensPerCredit: 0
-  tokenKeyCodes: 710100008501000099010000ad010000
+  tokenKeyCodes: 31000000320000003300000034000000
   editorTokenKeyCodes: 31000000320000003300000034000000
   freePlayString: FREE PLAY
   onePlayPerTokenString: 1 CREDIT PER COIN
