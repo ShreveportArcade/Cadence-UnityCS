@@ -16,7 +16,8 @@ public class SettingsManager : MonoBehaviour {
 		}
 	}
 
-	private string sceneToLoad;
+	public string settingsScene = "CadenceSettings";
+	private string exitToScene;
 	private bool cursorVisibleInGame;
 
 	void Awake () {
@@ -39,15 +40,15 @@ public class SettingsManager : MonoBehaviour {
 	}
 
 	public static void EnterSettings () {
-		instance.sceneToLoad = SceneManager.GetActiveScene().name;
+		instance.exitToScene = SceneManager.GetActiveScene().name;
 		instance.cursorVisibleInGame = Cursor.visible;
 		Cursor.visible = true;
-		SceneManager.LoadScene("CadenceSettings");
+		SceneManager.LoadScene(instance.settingsScene);
 	}
 
 	public static void ExitSettings () {
 		Cursor.visible = instance.cursorVisibleInGame;
-		SceneManager.LoadScene(instance.sceneToLoad);
+		SceneManager.LoadScene(instance.exitToScene);
 	}
 }
 }
