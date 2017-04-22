@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 namespace Cadence {
 public class SettingsManager : MonoBehaviour {
 
+	public delegate void OnSettingsChanged();
+	public static event OnSettingsChanged onSettingsChanged = delegate{};
+
 	private static SettingsManager _instance;
 	public static SettingsManager instance {
 		get {
@@ -17,7 +20,9 @@ public class SettingsManager : MonoBehaviour {
 	}
 
 	public string settingsScene = "CadenceSettings";
+	public LoadSceneMode loadSceneMode = LoadSceneMode.Additive;
 	private bool cursorVisibleInGame;
+	private string exitToScene;
 
 	void Awake () {
 		if (_instance == null) {
@@ -41,12 +46,20 @@ public class SettingsManager : MonoBehaviour {
 	public static void EnterSettings () {
 		instance.cursorVisibleInGame = Cursor.visible;
 		Cursor.visible = true;
-		SceneManager.LoadSceneAsync(instance.settingsScene, LoadSceneMode.Additive);
+		instance.exitToScene = SceneManager.GetActiveScene().name;
+		SceneManager.LoadScene(instance.settingsScene, instance.loadSceneMode);
 	}
 
 	public static void ExitSettings () {
 		Cursor.visible = instance.cursorVisibleInGame;
-		SceneManager.UnloadSceneAsync(instance.settingsScene);
+		if (instance.loadSceneMode == LoadSceneMode.Single) {
+			SceneManager.LoadScene(instance.exitToScene);
+		}
+		else {
+			SceneManager.UnloadSceneAsync(instance.settingsScene);
+		}
+
+		onSettingsChanged();
 	}
 }
 }
