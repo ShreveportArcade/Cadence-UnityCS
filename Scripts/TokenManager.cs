@@ -42,14 +42,13 @@ public class TokenManager : MonoBehaviour {
 		KeyCode.Joystick3Button19,
 		KeyCode.Joystick4Button19
 	};
-	#if UNITY_EDITOR
-	public KeyCode[] editorTokenKeyCodes = new KeyCode[] {
+
+	public KeyCode[] altTokenKeyCodes = new KeyCode[] {
 		KeyCode.Alpha1,
 		KeyCode.Alpha2,
 		KeyCode.Alpha3,
 		KeyCode.Alpha4
 	};	
-	#endif
 	
 	private int[] _tokensInserted;
 	public int[] tokensInserted {
@@ -215,11 +214,8 @@ public class TokenManager : MonoBehaviour {
 	void Update () {
 		if (!hasCoinDoor) return;
 		for (int i = 0; i < CoinAcceptorCount(); i++) {
-			#if UNITY_EDITOR
-			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
-			#else
-			if (Input.GetKeyUp(tokenKeyCodes[i])) InsertToken(i);
-			#endif
+			if (Input.GetKeyUp(tokenKeyCodes[i]) || Input.GetKeyUp(altTokenKeyCodes[i])) 
+				InsertToken(i);
 		}
 	}
 
