@@ -33,7 +33,7 @@ public class TokenManager : MonoBehaviour {
 	[Tooltip("-n = 1/n tokens per credit = n credits per token, 0 = freeplay")]
 	public int tokensPerCredit = 1;
 	public static bool isFreePlay {
-		get { return instance.tokensPerCredit == 0; }
+		get { return !instance.hasCoinDoor || instance.tokensPerCredit == 0; }
 	}
 
 	public KeyCode[] tokenKeyCodes = new KeyCode[] {
