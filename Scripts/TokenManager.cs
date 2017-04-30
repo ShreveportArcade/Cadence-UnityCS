@@ -42,7 +42,7 @@ public class TokenManager : MonoBehaviour {
 		KeyCode.Joystick3Button19,
 		KeyCode.Joystick4Button19
 	};
-	#if UNITY_EDITOR || !UNITY_LINUX
+	#if UNITY_EDITOR
 	public KeyCode[] editorTokenKeyCodes = new KeyCode[] {
 		KeyCode.Alpha1,
 		KeyCode.Alpha2,
@@ -215,7 +215,7 @@ public class TokenManager : MonoBehaviour {
 	void Update () {
 		if (!hasCoinDoor) return;
 		for (int i = 0; i < CoinAcceptorCount(); i++) {
-			#if UNITY_EDITOR || !UNITY_LINUX
+			#if UNITY_EDITOR
 			if (Input.GetKeyUp(editorTokenKeyCodes[i])) InsertToken(i);
 			#else
 			if (Input.GetKeyUp(tokenKeyCodes[i])) InsertToken(i);
