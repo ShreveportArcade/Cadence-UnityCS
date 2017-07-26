@@ -8,7 +8,7 @@ using Cadence;
 
 public class ScoreEntryController : MonoBehaviour {
 
-	public delegate void OnNameSubmitted();
+	public delegate void OnNameSubmitted(string name);
 	public static event OnNameSubmitted onNameSubmitted = delegate {};
 
 	public int numLetters = 3;
@@ -82,8 +82,7 @@ public class ScoreEntryController : MonoBehaviour {
 	public void OKPressed () {
 		ready = false;
 		AudioManager.PlayEffect(confirmSound);
-		ScoreManager.instance.AddHighScore(GameManager.instance.fliesEaten, new string(initials));
-		onNameSubmitted();
+		onNameSubmitted(new string(initials));
 	}
 
 	Vector2 lastDir;
