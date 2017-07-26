@@ -67,6 +67,7 @@ public class ScoreEntryController : MonoBehaviour {
 	}
 
 	public void UpdateLetter (int dir) {
+		if (index >= letterIndices.Length) return;
 		AudioManager.PlayEffect(selectSound);
 		letterIndices[index] = (letterIndices[index] + dir + letters.Length) % letters.Length;
 		char letter = letters[letterIndices[index]];
