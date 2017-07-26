@@ -8,15 +8,19 @@ public class ScoreManager : MonoBehaviour {
 	public string gameKey = "Game";
 
 	public string defaultInitials = "---";
-	public int[] defaultScoresArray = new int[] { 100000, 8000, 6000, 4500, 3000, 1000 };
+	public int[] defaultScores = new int[] { 100000, 8000, 6000, 4500, 3000, 1000 };
 
-	private string[] _initialsArray;
-	public string[] initialsArray {
-		get { return _initialsArray; }
+	private string[] _initials;
+	public string[] initials {
+		get { return _initials; }
 	}
-	private int[] _scoresArray;
-	public int[] scoresArray {
-		get { return _scoresArray; }
+	
+	private int[] _scores;
+	public int[] scores {
+		get { return _scores; }
+	}
+	public static int highScore {
+		get { return instance._scores[0]; }
 	}
 	
 	void Awake () {
@@ -26,30 +30,30 @@ public class ScoreManager : MonoBehaviour {
 	}
 
 	void InitializeScores () {
-		_initialsArray = new string[defaultScoresArray.Length];
-		for (int i = 0; i < defaultScoresArray.Length; i++) {
-			_initialsArray[i] = defaultInitials;
+		_initials = new string[defaultScores.Length];
+		for (int i = 0; i < defaultScores.Length; i++) {
+			_initials[i] = defaultInitials;
 		}
-		_scoresArray = defaultScoresArray.Clone() as int[];
+		_scores = defaultScores.Clone() as int[];
 	}
 	
 	public void LoadHighScores () {
-		for (int i = 0; i < defaultScoresArray.Length; i++) {
-			_initialsArray[i] = PlayerPrefs.GetString(gameKey + ".HighScoreName" + i, defaultInitials);
-			_scoresArray[i] = PlayerPrefs.GetInt(gameKey + ".HighScore" + i, defaultScoresArray[i]);
+		for (int i = 0; i < defaultScores.Length; i++) {
+			_initials[i] = PlayerPrefs.GetString(gameKey + ".HighScoreName" + i, defaultInitials);
+			_scores[i] = PlayerPrefs.GetInt(gameKey + ".HighScore" + i, defaultScores[i]);
 		}
 	}
 
 	public void SaveHighScores () {
-		for (int i = 0; i < defaultScoresArray.Length; i++) {
-			PlayerPrefs.SetString(gameKey + ".HighScoreName" + i, _initialsArray[i]);
-			PlayerPrefs.SetInt(gameKey + ".HighScore" + i, _scoresArray[i]);
+		for (int i = 0; i < defaultScores.Length; i++) {
+			PlayerPrefs.SetString(gameKey + ".HighScoreName" + i, _initials[i]);
+			PlayerPrefs.SetInt(gameKey + ".HighScore" + i, _scores[i]);
 		}
 		PlayerPrefs.Save();
 	}
 
 	public void ResetHighScores () {
-		for (int i = 0; i < defaultScoresArray.Length; i++) {
+		for (int i = 0; i < defaultScores.Length; i++) {
 			PlayerPrefs.DeleteKey(gameKey + ".HighScoreName" + i);
 			PlayerPrefs.DeleteKey(gameKey + ".HighScore" + i);
 		}
@@ -58,8 +62,8 @@ public class ScoreManager : MonoBehaviour {
 	}
 
 	public bool CheckHighScore (int score) {
-		for (int i = 0; i < defaultScoresArray.Length; i++) {
-			if (score > _scoresArray[i]) return true;
+		for (int i = 0; i < defaultScores.Length; i++) {
+			if (score > _scores[i]) return true;
 		}
 		return false;
 	}
@@ -68,13 +72,13 @@ public class ScoreManager : MonoBehaviour {
 		int lastScore = 0;
 		string lastInitials = "";
 		bool highScoreSet = false;
-		for (int i = 0; i < defaultScoresArray.Length; i++) {
-			if (score > _scoresArray[i] || highScoreSet) {
+		for (int i = 0; i < defaultScores.Length; i++) {
+			if (score > _scores[i] || highScoreSet) {
 				highScoreSet = true;
-				lastScore = _scoresArray[i];
-				lastInitials = _initialsArray[i];
-				_scoresArray[i] = score;
-				_initialsArray[i] = initials;
+				lastScore = _scores[i];
+				lastInitials = _initials[i];
+				_scores[i] = score;
+				_initials[i] = initials;
 				score = lastScore;
 				initials = lastInitials;
 			}
