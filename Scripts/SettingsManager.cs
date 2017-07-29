@@ -21,6 +21,7 @@ public class SettingsManager : MonoBehaviour {
 
 	public string settingsScene = "CadenceSettings";
 	public LoadSceneMode loadSceneMode = LoadSceneMode.Additive;
+	private CursorLockMode cursorLockStateInGame;
 	private bool cursorVisibleInGame;
 	private string exitToScene;
 
@@ -45,13 +46,16 @@ public class SettingsManager : MonoBehaviour {
 
 	public static void EnterSettings () {
 		instance.cursorVisibleInGame = Cursor.visible;
+		instance.cursorLockStateInGame = Cursor.lockState;
 		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
 		instance.exitToScene = SceneManager.GetActiveScene().name;
 		SceneManager.LoadScene(instance.settingsScene, instance.loadSceneMode);
 	}
 
 	public static void ExitSettings () {
 		Cursor.visible = instance.cursorVisibleInGame;
+		Cursor.lockState = instance.cursorLockStateInGame;
 		if (instance.loadSceneMode == LoadSceneMode.Single) {
 			SceneManager.LoadScene(instance.exitToScene);
 		}
