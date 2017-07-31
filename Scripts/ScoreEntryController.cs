@@ -62,6 +62,7 @@ public class ScoreEntryController : MonoBehaviour {
 	}
 
 	public void UpdateIndex (int dir) {
+		AudioManager.PlayEffect(selectSound);
 		index = Mathf.Max(index + dir, 0);
 		if (index < letterSelectors.Length) {
 			EventSystem.current.SetSelectedGameObject(letterSelectors[index].gameObject);
@@ -82,7 +83,6 @@ public class ScoreEntryController : MonoBehaviour {
 	}
 
 	public void NextPressed () {
-		AudioManager.PlayEffect(selectSound);
 		UpdateIndex(1);
 	}
 

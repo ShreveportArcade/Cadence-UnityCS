@@ -130,6 +130,7 @@ public class TokenManager : MonoBehaviour {
 			if (tokensSoFar == 0) AddCredit(1, acceptor);
 		}
 		else if (tokensPerCredit < 0) {
+			onTokenInserted(acceptor, 0, 0);
 			AddCredit(-tokensPerCredit, acceptor);
 		}
 		else {
