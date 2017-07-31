@@ -93,8 +93,8 @@ public class TokenManager : MonoBehaviour {
 	}
 
 	public static void LoadSession () {
-		instance.hasCoinDoor = PlayerPrefs.GetInt("Cadence.hasCoinDoor", 1) == 1;
-		instance.tokensPerCredit = PlayerPrefs.GetInt("Cadence.tokensPerCredit", 1);
+		instance.hasCoinDoor = PlayerPrefs.GetInt("Cadence.hasCoinDoor", instance.hasCoinDoor ? 1 : 0) == 1;
+		instance.tokensPerCredit = PlayerPrefs.GetInt("Cadence.tokensPerCredit", instance.tokensPerCredit);
 		for (int i = 0; i < CoinAcceptorCount(); i++) {
 			instance._tokensInserted[i] = PlayerPrefs.GetInt("Cadence.tokensInserted." + i, 0);
 			instance._credits[i] = PlayerPrefs.GetInt("Cadence.credits." + i, 0);
