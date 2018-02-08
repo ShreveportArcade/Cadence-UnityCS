@@ -8,6 +8,13 @@ public class SettingsManager : MonoBehaviour {
 	public delegate void OnSettingsChanged();
 	public static event OnSettingsChanged onSettingsChanged = delegate{};
 
+    public bool allowExit = false;
+    public float exitHoldTime = 5;
+    public KeyCode[] exitButtonCombo = new KeyCode[] {
+        KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R
+    };
+    private float lastExitRelease;
+
 	private static SettingsManager _instance;
 	public static SettingsManager instance {
 		get {
@@ -26,6 +33,7 @@ public class SettingsManager : MonoBehaviour {
 	private string exitToScene;
 
 	void Awake () {
+        lastExitRelease = Time.time;
 		if (_instance == null) {
 			_instance = this;
 			if (_instance.transform.parent == null) DontDestroyOnLoad(_instance.gameObject);
@@ -42,6 +50,22 @@ public class SettingsManager : MonoBehaviour {
 			(Input.GetKey(KeyCode.RightAlt) || Input.GetKey(KeyCode.LeftAlt))) {
 			EnterSettings();
 		}
+
+        if (allowExit) {
+            bool shouldExit = true;
+            foreach (KeyCode key in exitButtonCombo) {
+                if (!Input.GetKey(key)) {
+                    shouldExit = false;
+                    break;
+                }
+            }
+            if (!shouldExit) lastExitRelease = Time.time;
+
+            if (Time.time - lastExitRelease > exitHoldTime) {
+                Debug.Log("Application Quitting");
+                Application.Quit();
+            }
+        }
 	}
 
 	public static void EnterSettings () {
