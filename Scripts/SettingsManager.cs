@@ -62,8 +62,11 @@ public class SettingsManager : MonoBehaviour {
             if (!shouldExit) lastExitRelease = Time.time;
 
             if (Time.time - lastExitRelease > exitHoldTime) {
-                Debug.Log("Application Quitting");
+#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+#else 
                 Application.Quit();
+#endif
             }
         }
 	}
