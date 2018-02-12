@@ -9,9 +9,9 @@ public class SettingsManager : MonoBehaviour {
 	public static event OnSettingsChanged onSettingsChanged = delegate{};
 
     public bool allowExit = false;
-    public float exitHoldTime = 5;
+    public float exitHoldTime = 2;
     public KeyCode[] exitButtonCombo = new KeyCode[] {
-        KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R
+        KeyCode.Z, KeyCode.X, KeyCode.C
     };
     private float lastExitRelease;
 
